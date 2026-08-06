@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Go-to-Market Maven — A Fortune-500 marketing playbook, in a day</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+<style>
+  :root{
+    /* ---- Brand palette (sampled from the Go-to-Market Maven panda) ---- */
+    --brand:#02254B;        /* Maven Navy (primary) */
+    --brand-dark:#001B3A;   /* Deep Navy */
+    --brand-darker:#001127; /* Ink Navy */
+    --pink:#F22EBE;         /* Maven Pink (accent / energy) */
+    --pink-soft:#ffe3f8;    /* Pink wash */
+    --cyan:#00C5D8;         /* Maven Cyan (secondary accent) */
+    --cyan-soft:#dcf7fb;    /* Cyan wash */
+    --accent:#00C5D8;       /* alias -> cyan */
+    --accent-bright:#F22EBE;/* alias -> pink */
+    --gold:#F22EBE;         /* ratings use brand pink */
+    /* ---- Neutrals ---- */
+    --ink:#0b1526;          /* near-navy ink (headings) */
+    --ink-soft:#4a5568;     /* Slate (body) */
+    --paper:#ffffff;
+    --wash:#f4f7fb;         /* Mist (section wash) */
+    --line:#e3e9f1;         /* Hairline */
+    --radius:14px;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  a{color:var(--brand);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Nav */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{display:flex;align-items:center;gap:11px}
+  .logo img{display:block}
+  .logo:hover{text-decoration:none}
+  .logo-word{font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--brand);line-height:1}
+  .logo-word b{color:var(--pink)}
+  .btn{
+    display:inline-block;background:var(--pink);color:#fff;font-weight:700;
+    padding:12px 24px;border-radius:999px;font-size:15px;transition:.15s;border:none;cursor:pointer;
+    box-shadow:0 6px 18px rgba(242,46,190,.28)
+  }
+  .btn:hover{background:#d81ba8;text-decoration:none;transform:translateY(-1px)}
+  .btn.ghost{background:var(--cyan);color:var(--brand);border:none;box-shadow:0 6px 18px rgba(0,197,216,.28)}
+  .btn.ghost:hover{background:#00b0c1;color:var(--brand)}
+
+  /* Hero */
+  .hero{text-align:center;padding:64px 0 64px}
+  .hero-logo{height:150px;width:auto;margin:0 auto 20px;display:block}
+  .pill{display:inline-block;background:var(--pink-soft);border:1px solid #ffc7ef;color:#b3159a;
+    font-size:13px;font-weight:700;padding:6px 14px;border-radius:999px;margin-bottom:24px;letter-spacing:.02em}
+  .hero h1{font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-.03em;font-weight:800;max-width:820px;margin:0 auto}
+  .hero p.lead{font-size:clamp(17px,2vw,20px);color:var(--ink-soft);max-width:620px;margin:22px auto 34px}
+  .hero .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .price-note{margin-top:20px;font-size:14px;color:var(--ink-soft)}
+
+  /* Trust strip */
+  .trust{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;padding:0 0 8px;color:var(--ink-soft);font-size:14px;font-weight:600}
+  .trust span{display:flex;align-items:center;gap:8px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);display:inline-block}
+
+  /* Section */
+  section{padding:72px 0}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 48px}
+  .section-head h2{font-size:clamp(26px,3.5vw,36px);letter-spacing:-.02em;font-weight:800}
+  .section-head p{color:var(--ink-soft);margin-top:12px;font-size:17px}
+  .eyebrow{color:var(--pink);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+
+  /* Deliverables */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:820px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:.15s}
+  .card:hover{box-shadow:0 8px 30px rgba(15,23,32,.06);transform:translateY(-2px)}
+  .card .ic{width:44px;height:44px;border-radius:11px;background:var(--cyan-soft);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+  .card p{color:var(--ink-soft);font-size:15px}
+
+  /* How it works */
+  .how{background:var(--wash)}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;counter-reset:step}
+  .step{position:relative;padding-top:14px}
+  .step .num{width:36px;height:36px;border-radius:50%;background:var(--pink);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .step h3{font-size:17px;margin-bottom:6px}
+  .step p{color:var(--ink-soft);font-size:15px}
+
+  /* Compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:760px;margin:0 auto}
+  .compare .col{border-radius:var(--radius);padding:28px;border:1px solid var(--line)}
+  .compare .old{background:var(--wash)}
+  .compare .new{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .compare h3{font-size:15px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;opacity:.8}
+  .compare ul{list-style:none}
+  .compare li{padding:8px 0;font-size:15px;display:flex;gap:10px;align-items:flex-start}
+  .compare .new li::before{content:"✓";color:var(--cyan);font-weight:700}
+  .compare .old li::before{content:"✕";color:#c0392b;font-weight:700}
+
+  /* Use cases */
+  .uses{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .use{border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .use h3{font-size:16px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  .use .tag{width:26px;height:26px;border-radius:8px;background:var(--cyan);color:var(--brand);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .use p{color:var(--ink-soft);font-size:15px}
+
+  /* CTA band */
+  .band{background:linear-gradient(135deg,var(--brand),var(--pink));color:#fff;border-radius:24px;text-align:center;padding:56px 28px}
+  .band h2{font-size:clamp(26px,3.5vw,36px);letter-spacing:-.02em;font-weight:800}
+  .band p{opacity:.9;margin:14px auto 28px;max-width:520px;font-size:17px}
+  .band .btn{background:#fff;color:var(--pink);box-shadow:none}
+  .band .btn:hover{background:#fff;color:#d81ba8}
+
+  /* Top 10 reasons */
+  .reasons{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 32px;max-width:900px;margin:0 auto}
+  .reasons li{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+  .rnum{font-weight:800;font-size:20px;color:var(--pink);min-width:34px;line-height:1.2}
+  .reasons h3{font-size:16px;font-weight:700;margin-bottom:2px}
+  .reasons p{color:var(--ink-soft);font-size:14px}
+
+  /* Testimonials */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .quote{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;margin:0;display:flex;flex-direction:column;gap:14px}
+  .stars{color:var(--pink);letter-spacing:2px;font-size:15px}
+  .quote blockquote{font-size:16px;line-height:1.55;color:var(--ink)}
+  .quote figcaption{display:flex;flex-direction:column;gap:2px;font-size:14px}
+  .quote figcaption strong{color:var(--ink)}
+  .quote figcaption span{color:var(--ink-soft)}
+  .quote figcaption a{color:var(--pink);font-weight:600}
+  .disclaimer{text-align:center;color:var(--ink-soft);font-size:12px;margin-top:22px;opacity:.75}
+
+  /* Resources */
+  .resgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .res{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:.15s}
+  .res:hover{box-shadow:0 8px 30px rgba(15,23,32,.08);transform:translateY(-2px);text-decoration:none}
+  .res .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--brand),var(--pink));display:flex;align-items:center;justify-content:center}
+  .res .play{width:46px;height:46px;border-radius:50%;background:#fff;color:var(--pink);display:flex;align-items:center;justify-content:center;font-size:16px;padding-left:3px}
+  .res-body{padding:18px;display:flex;flex-direction:column;gap:6px}
+  .kind{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pink)}
+  .kind-read{color:var(--cyan)}
+  .res h3{font-size:16px;font-weight:700;color:var(--ink)}
+  .res p{font-size:14px;color:var(--ink-soft)}
+  .read-more{font-size:13px;font-weight:700;color:var(--pink);margin-top:4px}
+
+  /* Contact form */
+  .contact-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center;background:var(--wash);border:1px solid var(--line);border-radius:24px;padding:44px}
+  .contact-intro h2{font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;font-weight:800;margin:8px 0 12px}
+  .contact-intro p{color:var(--ink-soft);font-size:16px}
+  .contact-points{list-style:none;margin-top:20px;display:flex;flex-direction:column;gap:10px;color:var(--ink);font-size:14px;font-weight:600}
+  .contact-points li{display:flex;align-items:center;gap:10px}
+  .contact-form{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:14px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:13px;font-weight:600;color:var(--ink)}
+  .field input,.field textarea{border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff;transition:.15s}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px rgba(242,46,190,.14)}
+  .contact-form .btn{margin-top:4px}
+  .formnote{font-size:12px;color:var(--ink-soft);opacity:.8}
+
+  /* Footer */
+  footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-soft);font-size:14px}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .foot a{color:var(--ink-soft)}
+
+  /* Podcast band */
+  .podcast{display:flex;align-items:center;gap:26px;background:var(--brand);color:#fff;border-radius:20px;padding:30px 34px;margin-top:32px;flex-wrap:wrap}
+  .podcast .pic{width:60px;height:60px;border-radius:14px;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+  .podcast .ptext{flex:1;min-width:220px}
+  .podcast h3{font-size:19px;font-weight:800;margin-bottom:4px}
+  .podcast p{opacity:.85;font-size:15px}
+  .podcast .btn{background:var(--cyan);color:var(--brand);box-shadow:none;white-space:nowrap}
+  .podcast .btn:hover{background:#00b0c1;color:var(--brand)}
+
+  @media(max-width:900px){
+    .resgrid{grid-template-columns:repeat(2,1fr)}
+    .quotes{grid-template-columns:1fr}
+    .contact-wrap{grid-template-columns:1fr;gap:28px;padding:28px}
+  }
+  @media(max-width:640px){
+    .compare{grid-template-columns:1fr}
+    .reasons{grid-template-columns:1fr}
+    .resgrid{grid-template-columns:1fr}
+    section{padding:52px 0}
+    .hero{padding:56px 0 40px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><img src="assets/favicon.png" alt="Go-to-Market Maven" height="40"><span class="logo-word">Go-to-Market <b>Maven</b></span></a>
+    <a href="#contact" class="btn">Get started</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <img src="assets/logo-full.png" alt="Go-to-Market Maven" class="hero-logo">
+    <span class="pill">Smarter · Faster · 100% money-back guarantee</span>
+    <h1>A Fortune-500 marketing playbook. Delivered in a day.</h1>
+    <p class="lead">A complete, ready-to-use go-to-market strategy — combining AI analysis with expert human strategists — for under $1,000.</p>
+    <div class="cta-row">
+      <a href="#contact" class="btn">Get your playbook</a>
+      <a href="#how" class="btn ghost">See how it works</a>
+    </div>
+    <p class="price-note">Traditional firms charge $25,000+ and take weeks. We deliver comparable strategy in 24–48 hours.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="trust">
+    <span><i class="dot"></i> Under $1,000</span>
+    <span><i class="dot"></i> 24–48 hour turnaround</span>
+    <span><i class="dot"></i> 3-day money-back guarantee</span>
+  </div>
+</div>
+
+<!-- WHAT YOU GET -->
+<section id="what">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What you get</div>
+      <h2>Everything you need to start growing today</h2>
+      <p>One clear strategy — not five vague versions. Tangible assets you can use immediately.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="ic">💬</div>
+        <h3>Messaging that matters</h3>
+        <p>How to talk about what you sell in a way that actually resonates with your customer.</p>
+      </div>
+      <div class="card">
+        <div class="ic">✨</div>
+        <h3>A distinctive position</h3>
+        <p>Stand out as different and distinctive from your competitors — not just louder.</p>
+      </div>
+      <div class="card">
+        <div class="ic">📖</div>
+        <h3>One single-minded story</h3>
+        <p>The one story you need to tell. Clear, focused, and consistent everywhere.</p>
+      </div>
+      <div class="card">
+        <div class="ic">👥</div>
+        <h3>Custom personas</h3>
+        <p>Understand who your customers are and, more importantly, why they buy.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🚀</div>
+        <h3>Ready-to-use assets</h3>
+        <p>Tangible, actionable deliverables so you can start growing the moment you receive it.</p>
+      </div>
+      <div class="card">
+        <div class="ic">📊</div>
+        <h3>AI + human insight</h3>
+        <p>AI-powered market analysis, refined and validated by expert human strategists.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP 10 REASONS -->
+<section id="reasons" class="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why it's valuable</div>
+      <h2>Top 10 reasons to use the Maven</h2>
+      <p>The value in plain terms — what you actually walk away with.</p>
+    </div>
+    <ol class="reasons">
+      <li><span class="rnum">01</span><div><h3>Enterprise strategy at startup prices</h3><p>Fortune-500-level thinking for under $1,000 — not $25,000+.</p></div></li>
+      <li><span class="rnum">02</span><div><h3>Delivered in a day, not weeks</h3><p>A full playbook in 24–48 hours so you get to execution faster.</p></div></li>
+      <li><span class="rnum">03</span><div><h3>AI speed + human judgment</h3><p>Machine-scale analysis, validated and shaped by expert strategists.</p></div></li>
+      <li><span class="rnum">04</span><div><h3>One clear story</h3><p>A single, single-minded narrative — not five competing versions.</p></div></li>
+      <li><span class="rnum">05</span><div><h3>Know why customers buy</h3><p>Custom personas that reveal real motivations, not demographics alone.</p></div></li>
+      <li><span class="rnum">06</span><div><h3>Stand out from competitors</h3><p>A distinctive position that makes you different, not just louder.</p></div></li>
+      <li><span class="rnum">07</span><div><h3>Ready-to-use assets</h3><p>Tangible deliverables you can put to work the moment you receive them.</p></div></li>
+      <li><span class="rnum">08</span><div><h3>Investor-ready</h3><p>A polished playbook you can put in front of investors and stakeholders.</p></div></li>
+      <li><span class="rnum">09</span><div><h3>Risk-free</h3><p>Backed by a 3-day, 100% money-back guarantee.</p></div></li>
+      <li><span class="rnum">10</span><div><h3>A trusted sanity check</h3><p>Compare your own plan against the Maven's to cover every base.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Three simple steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Tell us about your business</h3>
+        <p>A short intake — your product, market, and goals. No lengthy discovery calls.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>We build your playbook</h3>
+        <p>Our hybrid AI + expert team analyzes your market and crafts your strategy.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Start executing</h3>
+        <p>Receive your full playbook in 24–48 hours — ready to put to work immediately.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The Maven difference</div>
+      <h2>The best of both worlds</h2>
+    </div>
+    <div class="compare">
+      <div class="col old">
+        <h3>Traditional firms</h3>
+        <ul>
+          <li>$25,000+ price tag</li>
+          <li>Weeks of waiting</li>
+          <li>Heavy process, slow calls</li>
+          <li>Out of reach for startups</li>
+        </ul>
+      </div>
+      <div class="col new">
+        <h3>Go-to-Market Maven</h3>
+        <ul>
+          <li>Under $1,000</li>
+          <li>Delivered in 24–48 hours</li>
+          <li>AI speed + human expertise</li>
+          <li>3-day money-back guarantee</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section id="uses" class="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Who it's for</div>
+      <h2>Built for anyone who needs a plan, fast</h2>
+    </div>
+    <div class="uses">
+      <div class="use"><h3><span class="tag">1</span> Startups</h3><p>Clarity and a robust base to build from — and a playbook you can show investors, without spending $10k on consultants.</p></div>
+      <div class="use"><h3><span class="tag">2</span> In-house teams</h3><p>Set campaign direction quickly. Save weeks of research and get to execution faster.</p></div>
+      <div class="use"><h3><span class="tag">3</span> Consultants</h3><p>A campaign springboard that accelerates insights so you deliver smarter and faster to clients.</p></div>
+      <div class="use"><h3><span class="tag">4</span> Agencies &amp; spec work</h3><p>Create speculative work for pitches efficiently — without straining budget, timeline, or patience.</p></div>
+      <div class="use"><h3><span class="tag">5</span> Small businesses</h3><p>Inspiration for your story and how to bring it to life, even without a big budget or team.</p></div>
+      <div class="use"><h3><span class="tag">6</span> A sanity check</h3><p>You're the expert — compare your plan to the Maven's to cover your bases and spot what you missed.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What clients say</div>
+      <h2>Trusted by founders and marketers</h2>
+    </div>
+    <div class="quotes">
+      <figure class="quote">
+        <div class="stars">★★★★★</div>
+        <blockquote>“When we received our playbook, we couldn’t believe the clarity and quality. We honestly asked how they got a hold of our strategy and pitch decks.”</blockquote>
+        <figcaption><strong>Jacob Schuler</strong><span>Founder &amp; CEO, <a href="https://blaze-barrier.com/" target="_blank" rel="noopener">Blaze Barrier</a></span></figcaption>
+      </figure>
+      <figure class="quote">
+        <div class="stars">★★★★★</div>
+        <blockquote>“We’ve been astonished at both the speed and quality of the playbooks — so much so that we now use them with the startup founders we work with. They’re also great to put in front of investors.”</blockquote>
+        <figcaption><strong>Steve Neff</strong><span>Senior Director, <a href="https://launchpadinw.com/" target="_blank" rel="noopener">Launchpad INW</a></span></figcaption>
+      </figure>
+      <figure class="quote">
+        <div class="stars">★★★★★</div>
+        <blockquote>“A quick and efficient way of wrapping your head around a brand’s strategic challenges and opportunities — with a recommendation and a playbook for how to take your brand to market.”</blockquote>
+        <figcaption><strong>Fredrik Sarnblad</strong><span>SVP, Exec. Strategy Director, <a href="https://doeanderson.com" target="_blank" rel="noopener">Doe Anderson</a></span></figcaption>
+      </figure>
+      <figure class="quote">
+        <div class="stars">★★★★★</div>
+        <blockquote>“Extremely valuable — a solid foundation and a clear roadmap for growth. It covers essential ground for a new business looking to establish its position in the market.”</blockquote>
+        <figcaption><strong>Elias Larsen</strong><span>Head of Growth, <a href="https://brandrindex.com/" target="_blank" rel="noopener">brandr Index</a></span></figcaption>
+      </figure>
+      <figure class="quote">
+        <div class="stars">★★★★★</div>
+        <blockquote>“Incredible value in time saved — a solid GTM report that needs very little adjustment from the first draft. High value-add for startups and small businesses!”</blockquote>
+        <figcaption><strong>April Needham</strong><span>Principal &amp; Lead Consultant, Bloom Consulting</span></figcaption>
+      </figure>
+      <figure class="quote">
+        <div class="stars">★★★★★</div>
+        <blockquote>“Impressed by the length and the writing — the exec summary was particularly effective. It speeds you up from not knowing where to start to somewhere real.”</blockquote>
+        <figcaption><strong>Gilmar Wendt</strong><span>Founder &amp; CEO, <a href="https://www.gilmarwendt.com/" target="_blank" rel="noopener">GW+Co.</a></span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS & ARTICLES -->
+<section id="resources" class="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Learn more</div>
+      <h2>From the blog</h2>
+      <p>Dig into the thinking behind the playbook.</p>
+    </div>
+    <div class="resgrid">
+      <a class="res" href="https://gotomarketmaven.com" target="_blank" rel="noopener">
+        <div class="res-body"><span class="kind kind-read">Article · Nov 14, 2024</span><h3>Fast Track for Founders and Regional Accelerators</h3><p>How founders and accelerators use the Maven to move from idea to go-to-market faster.</p><span class="read-more">Continue reading →</span></div>
+      </a>
+      <a class="res" href="https://gotomarketmaven.com" target="_blank" rel="noopener">
+        <div class="res-body"><span class="kind kind-read">Article · Nov 14, 2024</span><h3>Democratizing access to enterprise-grade marketing strategy</h3><p>Why Fortune-500 strategy shouldn’t be locked behind Fortune-500 budgets.</p><span class="read-more">Continue reading →</span></div>
+      </a>
+      <a class="res" href="https://gotomarketmaven.com" target="_blank" rel="noopener">
+        <div class="res-body"><span class="kind kind-read">Article · Nov 14, 2024</span><h3>Applying Go-to-Market Strategy to Employer Branding</h3><p>The same playbook thinking that wins customers can win talent, too.</p><span class="read-more">Continue reading →</span></div>
+      </a>
+      <a class="res" href="https://gotomarketmaven.com" target="_blank" rel="noopener">
+        <div class="res-body"><span class="kind kind-read">Article · Nov 14, 2024</span><h3>Why Your Business Needs a Go-to-Market Playbook (And Why Now)</h3><p>The case for a clear, single-minded GTM plan — and why waiting costs you.</p><span class="read-more">Continue reading →</span></div>
+      </a>
+    </div>
+    <div class="podcast">
+      <div class="pic">🎧</div>
+      <div class="ptext">
+        <h3>Meet the Maven · Podcast</h3>
+        <p>Go behind the playbook — conversations on brand, go-to-market, and demand gen.</p>
+      </div>
+      <a class="btn" href="https://soundcloud.com/go_to_market_maven/meet_the_maven" target="_blank" rel="noopener">Listen on SoundCloud</a>
+    </div>
+    <p class="disclaimer">Article links currently point to the site homepage — send me the exact blog URLs to link each post directly.</p>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <div class="contact-intro">
+        <div class="eyebrow">Get started</div>
+        <h2>Let’s build your playbook</h2>
+        <p>Tell us a little about your business and we’ll be in touch to get started. Prefer email? Reach us at <a href="mailto:kevin.keohane@brandandtalent.com">kevin.keohane@brandandtalent.com</a>.</p>
+        <ul class="contact-points">
+          <li><i class="dot"></i> Response within one business day</li>
+          <li><i class="dot"></i> No obligation, no hard sell</li>
+          <li><i class="dot"></i> 3-day money-back guarantee</li>
+        </ul>
+      </div>
+      <form class="contact-form" action="https://formsubmit.co/kevin.keohane@brandandtalent.com" method="POST">
+        <input type="hidden" name="_subject" value="New Go-to-Market Maven inquiry">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" style="display:none">
+        <div class="field"><label>Name</label><input type="text" name="name" required placeholder="Your name"></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required placeholder="you@company.com"></div>
+        <div class="field"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
+        <div class="field"><label>What do you need help with?</label><textarea name="message" rows="4" required placeholder="Tell us about your product, market, and goals…"></textarea></div>
+        <button type="submit" class="btn">Send inquiry</button>
+        <p class="formnote">By submitting, you agree to be contacted about your inquiry.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>© 2026 Go-to-Market Maven™</div>
+    <div>
+      <a href="mailto:info@gotomarketmaven.com">info@gotomarketmaven.com</a>
+      &nbsp;·&nbsp;
+      <a href="brand.html">Brand guide</a>
+      &nbsp;·&nbsp;
+      <a href="/faqs">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
