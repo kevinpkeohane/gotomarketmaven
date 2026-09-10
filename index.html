@@ -640,10 +640,10 @@
           <li><i class="dot"></i> 3-day money-back guarantee</li>
         </ul>
       </div>
-      <form class="contact-form" action="https://formsubmit.co/kevin.keohane@brandandtalent.com" method="POST">
-        <input type="hidden" name="_subject" value="New Go-to-Market Maven inquiry">
-        <input type="hidden" name="_template" value="table">
-        <input type="text" name="_honey" style="display:none">
+      <form class="contact-form" name="maven-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="maven-inquiry">
+        <p style="display:none"><label>Skip this field: <input name="bot-field"></label></p>
+        <input type="hidden" name="_form_loaded" id="_form_loaded">
         <div class="field"><label>Name</label><input type="text" name="name" required placeholder="Your name"></div>
         <div class="field"><label>Email</label><input type="email" name="email" required placeholder="you@company.com"></div>
         <div class="field"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
@@ -714,7 +714,10 @@
     });
 
     // ── 3. Contact form submissions ────────────────────────────────────────
-    document.querySelectorAll('form.contact-form, form[action*="formsubmit"]').forEach(function (form) {
+    document.querySelectorAll('form.contact-form, form[data-netlify]').forEach(function (form) {
+      // Stamp load time for bot timing detection
+      var loaded = document.getElementById('_form_loaded');
+      if (loaded) loaded.value = Date.now();
       form.addEventListener('submit', function () {
         fire(
           'generate_lead',
