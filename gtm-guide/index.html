@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Guide: Best Practices in GTM | Go-to-Market Maven®</title>
+  <meta name="description" content="Download the Go-to-Market Maven® Guide to Best Practices in GTM — fourteen practical articles on go-to-market strategy from positioning to pipeline to operating model." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png" />
+  <style>
+    /* ── Brand palette ── */
+    :root {
+      --brand: #02254B;
+      --brand-dark: #001B3A;
+      --pink: #F22EBE;
+      --pink-soft: #ffe3f8;
+      --cyan: #00C5D8;
+      --cyan-soft: #dcf7fb;
+      --ink: #0b1526;
+      --ink-soft: #4a5568;
+      --paper: #ffffff;
+      --wash: #f4f7fb;
+      --line: #e3e9f1;
+      --radius: 14px;
+      --maxw: 1080px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .logo { display: flex; align-items: center; gap: 11px; }
+    .logo img { display: block; }
+    .logo:hover { text-decoration: none; }
+    .logo-word { font-weight: 800; font-size: 18px; letter-spacing: -.02em; color: var(--brand); line-height: 1; }
+    .logo-word b { color: var(--pink); }
+    .btn {
+      display: inline-block;
+      background: var(--pink);
+      color: #fff;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 15px;
+      transition: .15s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(242,46,190,.28);
+      font-family: inherit;
+    }
+    .btn:hover { background: #d81ba8; text-decoration: none; transform: translateY(-1px); color: #fff; }
+    .btn.ghost { background: var(--cyan); color: var(--brand); box-shadow: 0 6px 18px rgba(0,197,216,.28); }
+    .btn.ghost:hover { background: #00b0c1; color: var(--brand); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 36px 0;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+    .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .foot a { color: var(--ink-soft); }
+
+    /* ── Landing hero ── */
+    .lp-hero { padding: 72px 0 68px; background: var(--paper); }
+    .eyebrow {
+      display: inline-block;
+      color: var(--pink);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .lp-hero h1 {
+      font-size: clamp(26px, 4vw, 46px);
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      font-weight: 800;
+      color: var(--brand);
+      max-width: 720px;
+      margin-bottom: 18px;
+    }
+    .lp-subhead {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--ink-soft);
+      max-width: 620px;
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+    .lp-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 56px;
+      align-items: flex-start;
+    }
+    @media (max-width: 880px) {
+      .lp-layout { grid-template-columns: 1fr; gap: 40px; }
+      .lp-card { max-width: 520px; }
+    }
+
+    /* Bullets */
+    .lp-bullets { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 13px; }
+    .lp-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .lp-bullet-dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      margin-top: 7px;
+      display: inline-block;
+    }
+
+    /* Form card */
+    .lp-card {
+      background: var(--wash);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+    }
+    .lp-card-heading {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 22px;
+      line-height: 1.3;
+    }
+    .lp-form { display: flex; flex-direction: column; gap: 14px; }
+    .lp-field { display: flex; flex-direction: column; gap: 6px; }
+    .lp-form label { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .lp-form input {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--ink);
+      background: #fff;
+      transition: border-color .15s, box-shadow .15s;
+      width: 100%;
+    }
+    .lp-form input:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(242,46,190,.14);
+    }
+    .lp-form input::placeholder { color: #aab; }
+    .lp-submit {
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+      transition: background .15s, transform .1s;
+      font-family: inherit;
+      box-shadow: 0 6px 18px rgba(242,46,190,.28);
+    }
+    .lp-submit:hover { background: #d81ba8; transform: translateY(-1px); }
+    .lp-trust {
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-align: center;
+      margin-top: 6px;
+      opacity: .8;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a href="/" class="logo">
+        <img src="/assets/favicon.png" alt="Go-to-Market Maven" height="40" />
+        <span class="logo-word">Go-to-Market <b>Maven</b></span>
+      </a>
+      <div>
+        <a href="/#faq" class="btn ghost" style="margin-right:8px">FAQ</a>
+        <a href="/#contact" class="btn">Get started</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="lp-hero">
+      <div class="wrap">
+        <span class="eyebrow">Free Guide</span>
+        <div class="lp-layout">
+
+          <div class="lp-copy">
+            <h1>The Go-to-Market Maven® Guide to Best Practices in GTM</h1>
+            <p class="lp-subhead">Fourteen practical articles on go-to-market strategy — from positioning to pipeline to operating model — drawn from two decades of GTM work.</p>
+            <ul class="lp-bullets">
+              <li><span class="lp-bullet-dot"></span>GTM strategy frameworks — how to build a go-to-market engine that actually generates pipeline</li>
+              <li><span class="lp-bullet-dot"></span>Market selection &amp; positioning — picking your ground and owning it distinctively</li>
+              <li><span class="lp-bullet-dot"></span>Offer design &amp; revenue narrative — shaping what you sell and the story you tell around it</li>
+              <li><span class="lp-bullet-dot"></span>Sales enablement &amp; operating model — the infrastructure that turns strategy into repeatable revenue</li>
+              <li><span class="lp-bullet-dot"></span>AI-native GTM — building go-to-market systems that scale without losing strategic clarity</li>
+            </ul>
+          </div>
+
+          <div class="lp-card">
+            <p class="lp-card-heading">Get your free copy</p>
+            <form
+              class="lp-form"
+              name="gtm-guide-download"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              action="/gtm-guide/thank-you/"
+            >
+              <input type="hidden" name="form-name" value="gtm-guide-download" />
+              <p style="display:none"><label>Don't fill this out: <input name="bot-field" /></label></p>
+              <div class="lp-field">
+                <label for="g-first">First name</label>
+                <input id="g-first" type="text" name="first_name" required placeholder="Your first name" />
+              </div>
+              <div class="lp-field">
+                <label for="g-email">Work email</label>
+                <input id="g-email" type="email" name="email" required placeholder="you@company.com" />
+              </div>
+              <button type="submit" class="lp-submit">Send me the guide →</button>
+              <p class="lp-trust">No spam. Used only to send you this guide.</p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 Go-to-Market Maven™</div>
+      <div>
+        <a href="mailto:info@gotomarketmaven.com">info@gotomarketmaven.com</a>
+        &nbsp;·&nbsp;
+        <a href="/brand.html">Brand guide</a>
+        &nbsp;·&nbsp;
+        <a href="/#faq">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
