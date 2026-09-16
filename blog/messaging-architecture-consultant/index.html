@@ -145,6 +145,7 @@
     footer{background:var(--brand);color:rgba(255,255,255,.7);padding:1.5rem;text-align:center;font-size:.82rem}
     footer a{color:rgba(255,255,255,.8)}
     footer a:hover{color:#fff}
+    .nav-links a[aria-current="page"],.nav-links a.nav-active{color:var(--brand);border-bottom:2px solid var(--pink);padding-bottom:2px}.nav-cta[aria-current="page"]{border-bottom:none;padding-bottom:0}
   </style>
 </head>
 <body>
@@ -155,7 +156,7 @@
     <ul class="nav-links" role="list">
       <li><a href="/#what">What you get</a></li>
       <li><a href="/#how">How it works</a></li>
-      <li><a href="/#blog">Blog</a></li>
+      <li><a href="/blog/" aria-current="page">Blog</a></li>
       <li><a href="/#contact" class="nav-cta">Get the Maven</a></li>
     </ul>
   </nav>
@@ -163,7 +164,7 @@
 
 <main>
   <article class="blog-wrap" itemscope itemtype="https://schema.org/BlogPosting">
-    <a href="/#blog" class="blog-back">All articles</a>
+    <a href="/blog/" class="blog-back">All articles</a>
 
     <img src="https://afocirmbqdxnkyescnev.supabase.co/storage/v1/object/public/featured-images/ee26d01d-1f80-44e7-8e39-126a27846f15/workflows/7c527e69-ca1e-415a-9761-4fa7eb0cc1ab.webp" alt="When to Hire a Messaging Architecture Consultant" class="blog-hero-img" itemprop="image">
 
