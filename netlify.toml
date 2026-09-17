@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/gtm-guide/thank-you"
+  to = "/gtm-guide/thank-you/"
+  status = 301
+
+[forms]
+  [forms.gtm-guide-download]
+    action = "/gtm-guide/thank-you/"
