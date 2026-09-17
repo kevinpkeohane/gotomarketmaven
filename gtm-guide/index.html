@@ -249,14 +249,13 @@
             <p class="lp-card-heading">Get your free copy</p>
             <form
               class="lp-form"
-              name="gtm-guide-download"
               method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              action="/gtm-guide/thank-you/"
+              action="https://formsubmit.co/info@gotomarketmaven.com"
             >
-              <input type="hidden" name="form-name" value="gtm-guide-download" />
-              <p style="display:none"><label>Don't fill this out: <input name="bot-field" /></label></p>
+              <input type="hidden" name="_next" value="https://gotomarketmaven.com/gtm-guide/thank-you/" />
+              <input type="hidden" name="_subject" value="GTM Guide Download" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="text" name="_honey" style="display:none" />
               <div class="lp-field">
                 <label for="g-first">First name</label>
                 <input id="g-first" type="text" name="first_name" required placeholder="Your first name" />
